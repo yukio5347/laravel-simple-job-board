@@ -14,4 +14,12 @@ class JobApplication extends Model
         'Female',
         'Others',
     ];
+
+    /**
+     * Get the job posting that owns the job application.
+     */
+    public function jobPosting()
+    {
+        return $this->belongsTo(JobPosting::class);
+    }
 }

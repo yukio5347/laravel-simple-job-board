@@ -37,6 +37,15 @@ class JobPosting extends Model
         'is_remote' => 'boolean',
     ];
 
+
+    /**
+     * Get the job applications for the job posting.
+     */
+    public function jobApplications()
+    {
+        return $this->hasMany(JobApplications::class);
+    }
+
     /**
      * Get the employment_type as displaying text
      *
