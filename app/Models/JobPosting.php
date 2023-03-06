@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class JobPosting extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     public const EMPLOYMENT_TYPE = [
         'FULL_TIME',

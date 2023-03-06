@@ -36,6 +36,7 @@ return new class extends Migration
             $table->ipAddress('ip_address')->nullable();
             $table->text('user_agent')->nullable();
             $table->timestamps();
+            $table->softDeletes();
             $table->unique(['title', 'company_name']);
         });
     }
