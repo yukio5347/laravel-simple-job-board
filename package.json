@@ -8,7 +8,10 @@
         "lint-staged": "lint-staged"
     },
     "lint-staged": {
-        "resources/ts/**/*.{js,jsx,ts,tsx}": "npm run lint && npm run format"
+        "resources/ts/**/*.{js,jsx,ts,tsx}": [
+            "npm run lint",
+            "npm run format"
+        ]
     },
     "devDependencies": {
         "@headlessui/react": "^1.4.2",
