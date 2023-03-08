@@ -49,7 +49,9 @@ class JobPostingController extends Controller
      */
     public function show(JobPosting $jobPosting)
     {
-        //
+        return view('jobs.show', [
+            'jobPosting' => $jobPosting,
+        ]);
     }
 
     /**
