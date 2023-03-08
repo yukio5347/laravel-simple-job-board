@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->date('published_at');
             $table->date('closed_at');
             $table->string('employment_type')->default('FULL_TIME');
             $table->string('address')->nullable();
