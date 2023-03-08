@@ -48,6 +48,17 @@ class JobPosting extends Model
     }
 
     /**
+     * Scope a query to only include active job postings.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('closed_at', '>=', today());
+    }
+
+    /**
      * Get the employment_type as displaying text
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
