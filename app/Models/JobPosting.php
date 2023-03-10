@@ -28,6 +28,55 @@ class JobPosting extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'title',
+        'description',
+        'closed_at',
+        'employment_type',
+        'address',
+        'locality',
+        'region',
+        'postal_code',
+        'is_remote',
+        'salary_min',
+        'salary_max',
+        'salary_unit',
+        'company_name',
+        'company_description',
+        'name',
+        'email',
+        'password',
+        'ip_address',
+        'user_agent',
+    ];
+
+    /**
+     * The attributes that should be visible in arrays.
+     *
+     * @var array
+     */
+    protected $visible = [
+        'id',
+        'description',
+        'closed_at',
+        'employment_type',
+        'address',
+        'locality',
+        'region',
+        'postal_code',
+        'is_remote',
+        'salary_min',
+        'salary_max',
+        'salary_unit',
+        'company_name',
+        'company_description',
+    ];
+
+    /**
      * The attributes that should be cast.
      *
      * @var array
