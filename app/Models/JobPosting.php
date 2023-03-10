@@ -61,6 +61,7 @@ class JobPosting extends Model
      */
     protected $visible = [
         'id',
+        'title',
         'description',
         'closed_at',
         'employment_type',
