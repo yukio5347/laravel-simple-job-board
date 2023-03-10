@@ -27,7 +27,18 @@ class JobPostingController extends Controller
      */
     public function create()
     {
-        //
+        $employmentTypes = [];
+        foreach (JobPosting::EMPLOYMENT_TYPE as $key) {
+            $employmentTypes[$key] = __($key);
+        }
+        $salaryUnit = [];
+        foreach (JobPosting::SALARY_UNIT as $key) {
+            $salaryUnit[$key] = __($key);
+        }
+        return Inertia::render('Jobs/Create', [
+            'employmentTypes' => $employmentTypes,
+            'salaryUnit' => $salaryUnit,
+        ]);
     }
 
     /**

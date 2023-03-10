@@ -7,7 +7,7 @@ import JobPosting from '@/Types/JobPosting';
 const Index = ({ paginator }: { paginator: Paginator }) => {
   const [currentJob, setCurrentJob] = useState(paginator.data[0]);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>, job: JobPosting): void => {
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, job: JobPosting): void => {
     event.preventDefault();
     setCurrentJob(job);
   };
