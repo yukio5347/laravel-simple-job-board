@@ -39,6 +39,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::model('job', JobPosting::class);
+        Route::resourceVerbs(['create' => 'new']);
     }
 
     /**
