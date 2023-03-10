@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import Pagination from '@/Components/Pagination';
 import Paginator from '@/Types/Paginator';
 import JobPosting from '@/Types/JobPosting';
 
 const Index = ({ paginator }: { paginator: Paginator }) => {
   const [currentJob, setCurrentJob] = useState(paginator.data[0]);
+  const { message } = usePage().props;
 
   const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, job: JobPosting): void => {
     event.preventDefault();
@@ -14,6 +15,7 @@ const Index = ({ paginator }: { paginator: Paginator }) => {
 
   return (
     <>
+      {message && <div className="alert">{String(message)}</div>}
       <span>jobs.index | page {paginator.current_page}</span>
       {paginator.data.length === 0 ? (
         <p>No jobs found.</p>

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\JobPostingRequest;
 use App\Models\JobPosting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
 class JobPostingController extends Controller
@@ -47,9 +49,16 @@ class JobPostingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(JobPostingRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $validated['ip_address'] = $request->ip();
+        $validated['user_agent'] = $request->userAgent();
+        $validated['password'] = Hash::make($validated['password']);
+        JobPosting::create($validated);
+        $request->session()->flash('message', __('Your job has been successfully posted!'));
+
+        return redirect()->route('jobs.index');
     }
 
     /**
