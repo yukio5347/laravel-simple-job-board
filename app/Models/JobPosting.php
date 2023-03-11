@@ -93,7 +93,7 @@ class JobPosting extends Model
      */
     public function jobApplications()
     {
-        return $this->hasMany(JobApplications::class);
+        return $this->hasMany(JobApplication::class);
     }
 
     /**
@@ -128,6 +128,55 @@ class JobPosting extends Model
     {
         return Attribute::make(
             get: fn ($value) => __($this->salary_unit),
+        );
+    }
+
+    /**
+     * Get the work place
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function workPlace(): Attribute
+    {
+        $address = [];
+        if ($this->address) {
+            $address[] = $this->address;
+        }
+        if ($this->locality && $this->locality !== $this->address) {
+            $address[] = $this->locality;
+        }
+        if ($this->region && $this->region !== $this->locality) {
+            $address[] = $this->region;
+        }
+        if ($this->postcode && $this->postcode !== $this->address && $this->postcode !== $this->locality) {
+            $address[] = $this->postcode;
+        }
+        $workPlace = implode(', ', $address);
+
+        if ($this->is_remote) {
+            $workPlace += $workPlace ? 'Remote: ' : 'Remote';
+        }
+
+        return Attribute::make(
+            get: fn ($value) => $workPlace,
+        );
+    }
+
+    /**
+     * Get the salary
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function salary(): Attribute
+    {
+        $salary = config('app.currency') . ' ' . number_format($this->salary_min);
+        if ($this->salary_max) {
+            $salary .= ' ~ ' . number_format($this->salary_max);
+        }
+        $salary .= ' / ' . $this->salary_unit_text;
+
+        return Attribute::make(
+            get: fn ($value) => $salary,
         );
     }
 }
