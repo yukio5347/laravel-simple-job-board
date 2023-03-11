@@ -16,6 +16,26 @@ class JobApplication extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'telephone',
+        'address',
+        'birthday',
+        'gender',
+        'description',
+        'education',
+        'work_history',
+        'certificates',
+        'ip_address',
+        'user_agent',
+    ];
+
+    /**
      * Get the job posting that owns the job application.
      */
     public function jobPosting()
