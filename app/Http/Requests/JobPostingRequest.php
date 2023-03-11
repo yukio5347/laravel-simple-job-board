@@ -28,7 +28,7 @@ class JobPostingRequest extends FormRequest
         return [
             'title' => [
                 'required', 'string', 'max:40',
-                Rule::unique('job_postings')->where(fn ($query) => $query->where('company_name', $this->company_name)),
+                Rule::unique('job_postings')->where(fn ($query) => $query->where('company_name', $this->company_name))->ignore($this->job),
             ],
             'description' => 'required|string|max:20000',
             'closed_at' => 'required|date|before_or_equal:' . today()->addDays(90)->format('Y-m-d'),
@@ -43,7 +43,7 @@ class JobPostingRequest extends FormRequest
             'salary_unit' => [Rule::in(JobPosting::SALARY_UNIT), 'required'],
             'company_name' => 'required|string|max:255',
             'company_description' => 'required|string|max:20000',
-            'name' => 'required|string|max:255',
+            'name' => 'sometimes|required|string|max:255',
             'email' => 'required|string|email:rfc,dns|max:255',
             'password' => 'required|string|max:255',
         ];

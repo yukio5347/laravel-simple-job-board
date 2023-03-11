@@ -55,7 +55,7 @@ class JobPostingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\JobPostingRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(JobPostingRequest $request)
@@ -99,13 +99,22 @@ class JobPostingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\JobPostingRequest  $request
      * @param  \App\Models\JobPosting  $jobPosting
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, JobPosting $jobPosting)
+    public function update(JobPostingRequest $request, JobPosting $jobPosting)
     {
-        //
+        $validated = $request->validated();
+        unset($validated['name']);
+        unset($validated['email']);
+        unset($validated['password']);
+        $validated['ip_address'] = $request->ip();
+        $validated['user_agent'] = $request->userAgent();
+        $jobPosting->fill($validated)->save();
+        $request->session()->flash('message', __('Your job has been successfully updated!'));
+
+        return redirect()->route('jobs.edit', $jobPosting);
     }
 
     /**
