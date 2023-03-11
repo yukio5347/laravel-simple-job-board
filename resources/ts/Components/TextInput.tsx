@@ -7,12 +7,15 @@ const TextInput = (
     isFocused = false,
     ...props
   }: { type?: string; className?: string; isFocused?: boolean },
-  ref: any
+  ref: {
+    current: any;
+  }
 ) => {
   const input = ref ? ref : useRef();
 
   useEffect(() => {
     if (isFocused) {
+      console.log(input.current);
       input.current.focus();
     }
   }, []);

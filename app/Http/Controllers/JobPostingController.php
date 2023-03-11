@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\JobPostingRequest;
 use App\Models\JobPosting;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
@@ -81,7 +80,7 @@ class JobPostingController extends Controller
         $validated['user_agent'] = $request->userAgent();
         $validated['password'] = Hash::make($validated['password']);
         JobPosting::create($validated);
-        $request->session()->flash('message', __('Your job has been successfully posted!'));
+        session()->flash('message', __('Your job has been successfully posted!'));
 
         return redirect()->route('jobs.index');
     }
@@ -128,9 +127,22 @@ class JobPostingController extends Controller
         $validated['ip_address'] = $request->ip();
         $validated['user_agent'] = $request->userAgent();
         $jobPosting->fill($validated)->save();
-        $request->session()->flash('message', __('Your job has been successfully updated!'));
+        session()->flash('message', __('Your job has been successfully updated!'));
 
         return redirect()->route('jobs.edit', $jobPosting);
+    }
+
+    /**
+     * Show the form for deleting the specified resource.
+     *
+     * @param  \App\Models\JobPosting  $jobPosting
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyConfirm(JobPosting $jobPosting)
+    {
+        return Inertia::render('Jobs/Delete', [
+            'jobPosting' => $jobPosting,
+        ]);
     }
 
     /**
@@ -141,6 +153,8 @@ class JobPostingController extends Controller
      */
     public function destroy(JobPosting $jobPosting)
     {
-        //
+        $jobPosting->delete();
+        session()->flash('message', __('Your job has been deleted.'));
+        return redirect()->route('jobs.index');
     }
 }

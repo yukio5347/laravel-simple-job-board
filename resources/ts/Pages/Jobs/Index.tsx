@@ -28,7 +28,7 @@ const Index = ({ paginator }: { paginator: Paginator }) => {
                   {job.id}: {job.title}
                 </a>
                 / <Link href={route('jobs.edit', job)}>Edit</Link>/{' '}
-                <Link href={route('jobs.destroy', job)}>Delete</Link>
+                <Link href={route('jobs.destroy.confirm', job)}>Delete</Link>
               </li>
             ))}
           </ul>

@@ -2,7 +2,9 @@ import { forwardRef, useEffect, useRef } from 'react';
 
 const Textarea = (
   { className = '', isFocused = false, ...props }: { className?: string; isFocused?: boolean },
-  ref: any
+  ref: {
+    current: any;
+  }
 ) => {
   const textarea = ref ? ref : useRef();
 

@@ -14,4 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('jobs/{job}/delete', [JobPostingController::class, 'destroyConfirm'])->name('jobs.destroy.confirm');
 Route::resource('jobs', JobPostingController::class);
