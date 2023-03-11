@@ -11,6 +11,26 @@ use Inertia\Inertia;
 class JobPostingController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            Inertia::share('employmentTypes', function() {
+                $employmentTypes = JobPosting::EMPLOYMENT_TYPE;
+                return array_combine($employmentTypes, array_map(fn(string $k): string => __($k), $employmentTypes));
+            });
+            Inertia::share('salaryUnit', function() {
+                $salaryUnit = JobPosting::SALARY_UNIT;
+                return array_combine($salaryUnit, array_map(fn(string $k): string => __($k), $salaryUnit));
+            });
+            return $next($request);
+        })->only(['create', 'edit']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -29,18 +49,7 @@ class JobPostingController extends Controller
      */
     public function create()
     {
-        $employmentTypes = [];
-        foreach (JobPosting::EMPLOYMENT_TYPE as $key) {
-            $employmentTypes[$key] = __($key);
-        }
-        $salaryUnit = [];
-        foreach (JobPosting::SALARY_UNIT as $key) {
-            $salaryUnit[$key] = __($key);
-        }
-        return Inertia::render('Jobs/Create', [
-            'employmentTypes' => $employmentTypes,
-            'salaryUnit' => $salaryUnit,
-        ]);
+        return Inertia::render('Jobs/Create');
     }
 
     /**
