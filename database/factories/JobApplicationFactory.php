@@ -24,7 +24,7 @@ class JobApplicationFactory extends Factory
             'address' => fake()->address,
             'birthday' => fake()->date,
             'gender' => fake()->randomElement(JobApplication::GENDER),
-            'description' => "This is the description. " . fake()->realText . "\n\n" . fake()->realText,
+            'summary' => "This is the summary. " . fake()->realText . "\n\n" . fake()->realText,
             'education' => "This is the education. " . fake()->realText . "\n\n" . fake()->realText,
             'work_history' => "This is the work histories. " . fake()->realText . "\n\n" . fake()->realText,
             'certificates' => "This is the certificates. " . fake()->realText . "\n\n" . fake()->realText,

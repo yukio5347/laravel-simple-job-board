@@ -15,7 +15,7 @@ const Edit = ({ genders, jobPosting }: { genders: Record<string, string>; jobPos
     address: '',
     birthday: '',
     gender: '',
-    description: '',
+    summary: '',
     education: '',
     work_history: '',
     certificates: '',
@@ -68,7 +68,7 @@ const Edit = ({ genders, jobPosting }: { genders: Record<string, string>; jobPos
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="address" value="telephone" />
+          <InputLabel htmlFor="telephone" value="telephone" />
           <TextInput
             id="telephone"
             name="telephone"
@@ -94,7 +94,7 @@ const Edit = ({ genders, jobPosting }: { genders: Record<string, string>; jobPos
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="closed_at" value="birthday" />
+          <InputLabel htmlFor="birthday" value="birthday" />
           <TextInput
             id="birthday"
             name="birthday"
@@ -122,16 +122,16 @@ const Edit = ({ genders, jobPosting }: { genders: Record<string, string>; jobPos
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="description" value="description" />
+          <InputLabel htmlFor="summary" value="summary" />
           <Textarea
-            id="description"
-            name="description"
-            value={data.description}
+            id="summary"
+            name="summary"
+            value={data.summary}
             className="mt-1 block w-full"
             onChange={handleOnChange}
             required
           />
-          <InputError message={errors.description} className="mt-2" />
+          <InputError message={errors.summary} className="mt-2" />
         </div>
 
         <div className="mt-4">
