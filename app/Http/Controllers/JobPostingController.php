@@ -17,6 +17,7 @@ class JobPostingController extends Controller
      */
     public function __construct()
     {
+        // Pass variables
         $this->middleware(function ($request, $next) {
             Inertia::share('employmentTypes', function() {
                 $employmentTypes = JobPosting::EMPLOYMENT_TYPE;
@@ -28,6 +29,21 @@ class JobPostingController extends Controller
             });
             return $next($request);
         })->only(['create', 'edit']);
+
+        // Verify password
+        $this->middleware(function ($request, $next) {
+            if (
+                $request->email === $request->job->email &&
+                Hash::check($request->password, $request->job->password)
+            ) {
+                return $next($request);
+            }
+
+            return back()->withInput($request->except('password'))->withErrors([
+                'email' => __('auth.failed'),
+                'password'=>  ' ',
+            ]);
+        })->only(['update', 'destroy']);
     }
 
     /**
