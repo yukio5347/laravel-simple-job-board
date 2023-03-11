@@ -16,6 +16,8 @@ class JobPostingController extends Controller
      */
     public function __construct()
     {
+        $this->middleware('active')->only(['show', 'edit', 'update', 'destroyConfirm', 'destroy']);
+
         // Pass variables
         $this->middleware(function ($request, $next) {
             Inertia::share('employmentTypes', function() {
