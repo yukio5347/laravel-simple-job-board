@@ -8,9 +8,9 @@ const Index = ({ paginator }: { paginator: Paginator }) => {
   const [currentJob, setCurrentJob] = useState(paginator.data[0]);
   const { message } = usePage().props;
 
-  const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, job: JobPosting): void => {
-    event.preventDefault();
-    setCurrentJob(job);
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, jobPosting: JobPosting): void => {
+    e.preventDefault();
+    setCurrentJob(jobPosting);
   };
 
   return (
@@ -22,13 +22,18 @@ const Index = ({ paginator }: { paginator: Paginator }) => {
       ) : (
         <>
           <ul>
-            {paginator.data.map((job: JobPosting, index: number) => (
+            {paginator.data.map((jobPosting: JobPosting, index: number) => (
               <li key={index} className="my-5">
-                <a href={route('jobs.show', job)} className="underline" onClick={(event) => handleClick(event, job)}>
-                  {job.id}: {job.title}
+                <a
+                  href={route('jobs.show', jobPosting)}
+                  className="underline"
+                  onClick={(e) => handleClick(e, jobPosting)}
+                >
+                  {jobPosting.id}: {jobPosting.title}
                 </a>
-                / <Link href={route('jobs.edit', job)}>Edit</Link>/{' '}
-                <Link href={route('jobs.destroy.confirm', job)}>Delete</Link>
+                / <Link href={route('jobs.edit', jobPosting)}>Edit</Link> /
+                <Link href={route('jobs.destroy.confirm', jobPosting)}>Delete</Link> /
+                <Link href={route('jobs.apply', jobPosting)}>Apply</Link>
               </li>
             ))}
           </ul>

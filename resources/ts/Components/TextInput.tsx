@@ -15,7 +15,6 @@ const TextInput = (
 
   useEffect(() => {
     if (isFocused) {
-      console.log(input.current);
       input.current.focus();
     }
   }, []);
