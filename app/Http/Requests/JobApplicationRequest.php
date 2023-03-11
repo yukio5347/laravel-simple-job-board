@@ -27,7 +27,10 @@ class JobApplicationRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email:rfc,dns|max:255|unique:job_applications',
+            'email' => [
+                'required', 'email', 'max:255',
+                Rule::unique('job_applications')->where(fn ($query) => $query->where('job_posting_id', $this->job->id))
+            ],
             'telephone' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
             'birthday' => 'nullable|date',
