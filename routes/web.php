@@ -14,5 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('jobs/{job}/amp', [JobPostingController::class, 'show'])->name('jobs.show.amp');
 Route::get('jobs/{job}/delete', [JobPostingController::class, 'destroyConfirm'])->name('jobs.destroy.confirm');
 Route::resource('jobs', JobPostingController::class);

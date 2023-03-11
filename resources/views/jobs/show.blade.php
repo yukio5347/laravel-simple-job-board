@@ -24,7 +24,8 @@
         <div>blade jobs.show</div>
         <div>ID: {{ $jobPosting->id }}</div>
         <div>Title: {{ $jobPosting->title }}</div>
-        <div>Description: {{ $jobPosting->description }}</div>  
+        <div>Description: {{ $jobPosting->description }}</div>
+        <div>AMP: {{ $amp ? 'true' : 'false' }}</div>
         <a href="{{ route('jobs.index') }}">Go back listing</a>
     </body>
 </html>

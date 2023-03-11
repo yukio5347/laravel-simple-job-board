@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\JobPostingRequest;
 use App\Models\JobPosting;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 class JobPostingController extends Controller
@@ -97,6 +98,7 @@ class JobPostingController extends Controller
     {
         return view('jobs.show', [
             'jobPosting' => $jobPosting,
+            'amp' => Route::currentRouteName() === 'jobs.show.amp',
         ]);
     }
 
