@@ -20,7 +20,6 @@ class JobPostingFactory extends Factory
         return [
             'title' => fake()->jobTitle,
             'description' => fake()->realText . "\n\n" . fake()->realText,
-            'published_at' => fake()->date,
             'closed_at' => fake()->date,
             'employment_type' => fake()->randomElement(JobPosting::EMPLOYMENT_TYPE),
             'address' => fake()->streetAddress,

@@ -28,12 +28,61 @@ class JobPosting extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'title',
+        'description',
+        'closed_at',
+        'employment_type',
+        'address',
+        'locality',
+        'region',
+        'postal_code',
+        'is_remote',
+        'salary_min',
+        'salary_max',
+        'salary_unit',
+        'company_name',
+        'company_description',
+        'name',
+        'email',
+        'password',
+        'ip_address',
+        'user_agent',
+    ];
+
+    /**
+     * The attributes that should be visible in arrays.
+     *
+     * @var array
+     */
+    protected $visible = [
+        'id',
+        'title',
+        'description',
+        'closed_at',
+        'employment_type',
+        'address',
+        'locality',
+        'region',
+        'postal_code',
+        'is_remote',
+        'salary_min',
+        'salary_max',
+        'salary_unit',
+        'company_name',
+        'company_description',
+    ];
+
+    /**
      * The attributes that should be cast.
      *
      * @var array
      */
     protected $casts = [
-        'published_at' => 'date',
         'closed_at' => 'date',
         'is_remote' => 'boolean',
     ];
@@ -45,6 +94,17 @@ class JobPosting extends Model
     public function jobApplications()
     {
         return $this->hasMany(JobApplications::class);
+    }
+
+    /**
+     * Scope a query to only include active job postings.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('closed_at', '>=', today());
     }
 
     /**
