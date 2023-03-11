@@ -7,31 +7,32 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import Textarea from '@/Components/Textarea';
 import TextInput from '@/Components/TextInput';
 import Select from '@/Components/Select';
+import JobPosting from '@/Types/JobPosting';
 
-const Show = ({
+const Edit = ({
   employmentTypes,
   salaryUnit,
+  jobPosting,
 }: {
   employmentTypes: Record<string, string>;
   salaryUnit: Record<string, string>;
+  jobPosting: JobPosting;
 }) => {
-  const today = new Date();
-  const { data, setData, post, processing, errors, reset } = useForm({
-    title: '',
-    description: '',
-    closed_at: new Date(today.setDate(today.getDate() + 30)).toISOString().replace(/T.*/, ''),
-    employment_type: 'FULL_TIME',
-    is_remote: true,
-    address: '',
-    locality: '',
-    region: '',
-    postal_code: '',
-    salary_min: 0,
-    salary_max: '',
-    salary_unit: 'MONTH',
-    company_name: '',
-    company_description: '',
-    name: '',
+  const { data, setData, patch, processing, errors, reset } = useForm({
+    title: jobPosting.title,
+    description: jobPosting.description,
+    closed_at: new Date(jobPosting.closed_at).toISOString().replace(/T.*/, ''),
+    employment_type: jobPosting.employment_type,
+    is_remote: jobPosting.is_remote,
+    address: jobPosting.address ?? '',
+    locality: jobPosting.locality ?? '',
+    region: jobPosting.region ?? '',
+    postal_code: jobPosting.postal_code ?? '',
+    salary_min: jobPosting.salary_min,
+    salary_max: jobPosting.salary_max ?? '',
+    salary_unit: jobPosting.salary_unit,
+    company_name: jobPosting.company_name,
+    company_description: jobPosting.company_description,
     email: '',
     password: '',
   });
@@ -48,12 +49,12 @@ const Show = ({
 
   const submit = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    post(route('jobs.store'));
+    patch(route('jobs.update', jobPosting));
   };
 
   return (
     <>
-      <Head title="Post a new job" />
+      <Head title="Edit the job" />
 
       <form onSubmit={submit}>
         <div>
@@ -235,21 +236,8 @@ const Show = ({
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="name" value="Name" />
-          <TextInput
-            id="name"
-            name="name"
-            value={data.name}
-            className="mt-1 block w-full"
-            autoComplete="name"
-            onChange={handleOnChange}
-            required
-          />
-          <InputError message={errors.name} className="mt-2" />
-        </div>
-
-        <div className="mt-4">
           <InputLabel htmlFor="email" value="Email" />
+
           <TextInput
             id="email"
             type="email"
@@ -260,6 +248,7 @@ const Show = ({
             onChange={handleOnChange}
             required
           />
+
           <InputError message={errors.email} className="mt-2" />
         </div>
 
@@ -284,4 +273,4 @@ const Show = ({
   );
 };
 
-export default Show;
+export default Edit;

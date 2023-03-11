@@ -91,7 +91,9 @@ class JobPostingController extends Controller
      */
     public function edit(JobPosting $jobPosting)
     {
-        //
+        return Inertia::render('Jobs/Edit', [
+            'jobPosting' => $jobPosting,
+        ]);
     }
 
     /**
