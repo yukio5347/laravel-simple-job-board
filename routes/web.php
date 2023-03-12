@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\JobPostingController;
 use Illuminate\Support\Facades\Route;
@@ -19,4 +20,6 @@ Route::get('jobs/{job}/amp', [JobPostingController::class, 'show'])->name('jobs.
 Route::get('jobs/{job}/delete', [JobPostingController::class, 'destroyConfirm'])->name('jobs.destroy.confirm');
 Route::get('jobs/{job}/apply', [JobApplicationController::class, 'create'])->name('jobs.apply');
 Route::post('jobs/{job}/apply', [JobApplicationController::class, 'store']);
+Route::get('contact', [ContactController::class, 'create'])->name('contact');
+Route::post('contact', [ContactController::class, 'store']);
 Route::resource('jobs', JobPostingController::class);
