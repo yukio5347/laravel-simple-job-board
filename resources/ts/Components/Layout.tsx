@@ -12,6 +12,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <Link href={route('jobs.create')} className="ml-5">
           Post a new job
         </Link>
+        <Link href={route('contact')} className="ml-5">
+          Contact us
+        </Link>
       </div>
       {children}
     </>
