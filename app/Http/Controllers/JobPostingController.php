@@ -133,7 +133,7 @@ class JobPostingController extends Controller
         $jobPosting->fill($validated)->save();
         session()->flash('message', __('Your job has been successfully updated!'));
 
-        return redirect()->route('jobs.edit', $jobPosting);
+        return redirect()->route('jobs.index');
     }
 
     /**

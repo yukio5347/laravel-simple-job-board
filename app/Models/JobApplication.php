@@ -27,12 +27,30 @@ class JobApplication extends Model
         'address',
         'birthday',
         'gender',
-        'description',
+        'summary',
         'education',
         'work_history',
         'certificates',
         'ip_address',
         'user_agent',
+    ];
+
+    /**
+     * The attributes that should be visible in arrays.
+     *
+     * @var array
+     */
+    protected $visible = [
+        'name',
+        'email',
+        'telephone',
+        'address',
+        'birthday',
+        'gender',
+        'summary',
+        'education',
+        'work_history',
+        'certificates',
     ];
 
     /**
