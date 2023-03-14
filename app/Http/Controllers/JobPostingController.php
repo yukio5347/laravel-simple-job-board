@@ -56,7 +56,9 @@ class JobPostingController extends Controller
     public function index()
     {
         return Inertia::render('Jobs/Index', [
-            'paginator' => JobPosting::active()->orderBy('id', 'desc')->paginate(),
+            'paginator' => JobPosting::active()->orderBy('id', 'desc')->paginate(20),
+            'title' => config('meta.jobs.index.title'),
+            'description' => config('meta.jobs.index.description'),
         ]);
     }
 

@@ -3,7 +3,7 @@
 @section('description', $description)
 
 @section('content')
-<div class="mb-8 bg-white border-b md:border-y md:border md:rounded-lg">
+<div class="mb-8 bg-white border-b md:border md:rounded-lg">
     <div class="flex justify-between pb-5 px-1 border-b md:p-7 xl:p-10">
         <div class="flex-1">
             <h1 class="text-lg font-semibold leading-tight mb-2">{{ $jobPosting->title }}</h1>
