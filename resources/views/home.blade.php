@@ -8,7 +8,7 @@
     @else
         <div class="grid gap-5 md:grid-cols-2">
         @foreach ($jobPostings as $jobPosting)
-            <a href={{ route('jobs.show', $jobPosting) }} class="flex flex-col justify-between p-4 border rounded-lg transition-colors lg:hover:border-sky-500">
+            <a href="{{ route('jobs.show', $jobPosting) }}" class="flex flex-col justify-between p-4 border rounded-lg transition-colors lg:hover:border-sky-500">
                 <div class="flex-1">
                     <h3 class="font-semibold leading-tight mb-1">{{ $jobPosting->title }}</h3>
                     <p class="text-sm text-sky-500 font-semibold mb-2">{{ $jobPosting->company_name }}</p>
