@@ -76,6 +76,29 @@ class JobPosting extends Model
         'salary_unit',
         'company_name',
         'company_description',
+        'created_at',
+        'employment_type_text',
+        'employment_type_color',
+        'salary_unit_text',
+        'short_work_place',
+        'work_place',
+        'short_salary',
+        'salary',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'employment_type_text',
+        'employment_type_color',
+        'salary_unit_text',
+        'short_work_place',
+        'work_place',
+        'short_salary',
+        'salary',
     ];
 
     /**
