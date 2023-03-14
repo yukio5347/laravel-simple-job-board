@@ -30,9 +30,23 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $data = [];
+        $locales = [config('app.locale'), config('app.fallback_locale')];
+
+        foreach ($locales as $locale) {
+            $path = lang_path("{$locale}.json");
+            $content = file_get_contents($path);
+            $data[$locale] = json_decode($content, true);
+        }
+
         return array_merge(parent::share($request), [
             'appName' => config('app.name'),
             'message' => fn () => $request->session()->get('message'),
+            'currency' => config('app.currency'),
+            'translations' => [
+                'locale' => config('app.locale'),
+                'data' => $data,
+            ],
             'auth' => [
                 'user' => $request->user(),
             ],
