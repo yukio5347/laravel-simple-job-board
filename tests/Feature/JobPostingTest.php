@@ -9,6 +9,23 @@ use Tests\TestCase;
 
 class JobPostingTest extends TestCase
 {
+    /**
+     * Hidden attributes to get params
+     *
+     * @var array
+     */
+    private array $hidden = [
+        'employment_type_text',
+        'created_at',
+        'employment_type_text',
+        'employment_type_color',
+        'salary_unit_text',
+        'short_work_place',
+        'work_place',
+        'short_salary',
+        'salary',
+    ];
+
     public function test_job_listing_page_can_be_rendered(): void
     {
         JobPosting::factory()->count(2)->create([
@@ -44,7 +61,7 @@ class JobPostingTest extends TestCase
     {
         $params = JobPosting::factory()->make([
             'title' => fake()->word,
-        ])->toArray();
+        ])->makeHidden($this->hidden)->toArray();
         $params['closed_at'] = today()->addDay()->format('Y-m-d');
         $params['name'] = fake()->name;
         $params['email'] = fake()->freeEmail;
@@ -99,7 +116,7 @@ class JobPostingTest extends TestCase
         ]);
         $params = JobPosting::factory()->make([
             'title' => fake()->word,
-        ])->toArray();
+        ])->makeHidden($this->hidden)->toArray();
         $params['closed_at'] = today()->addDay()->format('Y-m-d');
         $params['email'] = $jobPosting->email;
         $response = $this->put(route('jobs.update', $jobPosting), array_merge($params, ['password' => $password]));
@@ -197,7 +214,7 @@ class JobPostingTest extends TestCase
         ]);
         $params = JobPosting::factory()->make([
             'title' => fake()->word,
-        ])->toArray();
+        ])->makeHidden($this->hidden)->toArray();
         $params['closed_at'] = today()->addDay()->format('Y-m-d');
         $params['email'] = $jobPosting->email;
         $response = $this->put(route('jobs.update', $jobPosting), array_merge($params, ['password' => $password]));
@@ -251,7 +268,7 @@ class JobPostingTest extends TestCase
         ]);
         $params = JobPosting::factory()->make([
             'title' => fake()->word,
-        ])->toArray();
+        ])->makeHidden($this->hidden)->toArray();
         $params['closed_at'] = today()->addDay()->format('Y-m-d');
         $response = $this->put(route('jobs.update', $jobPosting), array_merge($params, ['password' => $password]));
         $response->assertSessionHasErrors([
@@ -274,7 +291,7 @@ class JobPostingTest extends TestCase
         ]);
         $params = JobPosting::factory()->make([
             'title' => fake()->word,
-        ])->toArray();
+        ])->makeHidden($this->hidden)->toArray();
         $params['closed_at'] = today()->addDay()->format('Y-m-d');
         $params['email'] = $jobPosting->email;
         $response = $this->put(route('jobs.update', $jobPosting), array_merge($params, ['password' => fake()->password]));
@@ -342,7 +359,7 @@ class JobPostingTest extends TestCase
             'name' => $name,
             'email' => $email,
         ]);
-        $params = $jobPosting->toArray();
+        $params = $jobPosting->makeHidden($this->hidden)->toArray();
         $params['closed_at'] = today()->addDay()->format('Y-m-d');
         $params['name'] = $name;
         $params['email'] = $email;
