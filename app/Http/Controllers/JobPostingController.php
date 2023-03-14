@@ -69,7 +69,10 @@ class JobPostingController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Jobs/Create');
+        return Inertia::render('Jobs/Create', [
+            'title' => config('meta.jobs.create.title'),
+            'description' => config('meta.jobs.create.description'),
+        ]);
     }
 
     /**

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
@@ -11,15 +11,20 @@ import Select from '@/Components/Select';
 const Show = ({
   employmentTypes,
   salaryUnit,
+  title,
+  description,
 }: {
   employmentTypes: Record<string, string>;
   salaryUnit: Record<string, string>;
+  title: string;
+  description: string;
 }) => {
+  const [isRemote, setIsRemote] = useState(false);
   const today = new Date();
   const { data, setData, post, processing, errors, reset } = useForm({
     title: '',
     description: '',
-    closed_at: new Date(today.setDate(today.getDate() + 30)).toISOString().replace(/T.*/, ''),
+    closed_at: dateToString(new Date(today.setDate(today.getDate() + 30))),
     employment_type: 'FULL_TIME',
     is_remote: true,
     address: '',
@@ -42,8 +47,13 @@ const Show = ({
     };
   }, []);
 
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setData(event.target.name, event.target.type === 'checkbox' ? String(event.target.checked) : event.target.value);
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setData(e.target.name, e.target.value);
+  };
+
+  const toggleIsRemote = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setData('is_remote', e.target.checked);
+    setIsRemote(!isRemote);
   };
 
   const submit = (event: React.SyntheticEvent) => {
@@ -53,11 +63,13 @@ const Show = ({
 
   return (
     <>
-      <Head title="Post a new job" />
-
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+      </Head>
       <form onSubmit={submit}>
         <div>
-          <InputLabel htmlFor="title" value="Title" />
+          <InputLabel htmlFor="title" value={__('Job Title')} isRequired={true} />
           <TextInput
             id="title"
             name="title"
@@ -65,26 +77,28 @@ const Show = ({
             className="mt-1 block w-full"
             isFocused={true}
             onChange={handleOnChange}
+            maxLength="40"
             required
           />
           <InputError message={errors.title} className="mt-2" />
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="description" value="description" />
+          <InputLabel htmlFor="description" value={__('Job Description')} isRequired={true} />
           <Textarea
             id="description"
             name="description"
             value={data.description}
             className="mt-1 block w-full"
             onChange={handleOnChange}
+            maxLength="20000"
             required
           />
           <InputError message={errors.description} className="mt-2" />
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="closed_at" value="closed_at" />
+          <InputLabel htmlFor="closed_at" value={__('Close Date')} isRequired={true} />
           <TextInput
             id="closed_at"
             name="closed_at"
@@ -92,13 +106,15 @@ const Show = ({
             className="mt-1 block w-full"
             type="date"
             onChange={handleOnChange}
+            min={dateToString(today)}
+            max={dateToString(new Date(today.setDate(today.getDate() + 90)))}
             required
           />
           <InputError message={errors.closed_at} className="mt-2" />
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="employment_type" value="employment_type" />
+          <InputLabel htmlFor="employment_type" value={__('Employment Type')} isRequired={true} />
           <Select
             id="employment_type"
             name="employment_type"
@@ -111,64 +127,75 @@ const Show = ({
           <InputError message={errors.employment_type} className="mt-2" />
         </div>
 
-        <div className="block mt-4">
-          <label className="flex items-center">
-            <Checkbox name="is_remote" value={data.is_remote} onChange={handleOnChange} />
-            <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">Remote job</span>
-          </label>
-        </div>
+        <h3 className="mt-10 font-semibold">{__('Work Place')}</h3>
+        <label className="mt-4 inline-flex items-center">
+          <Checkbox name="is_remote" value={data.is_remote} onChange={toggleIsRemote} />
+          <span className="ml-2 text-sm font-medium">{__('Remote')}</span>
+        </label>
 
         <div className="mt-4">
-          <InputLabel htmlFor="address" value="address" />
+          <InputLabel htmlFor="address" value={__('Address')} isRequired={!isRemote} />
           <TextInput
             id="address"
             name="address"
             value={data.address}
             className="mt-1 block w-full"
-            autoComplete="address"
+            autoComplete="street-address"
             onChange={handleOnChange}
+            maxLength="255"
+            required={!isRemote}
           />
           <InputError message={errors.address} className="mt-2" />
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="locality" value="locality" />
+          <InputLabel htmlFor="locality" value={__('City')} isRequired={!isRemote} />
           <TextInput
             id="locality"
             name="locality"
             value={data.locality}
             className="mt-1 block w-full"
+            autoComplete="address-level2"
             onChange={handleOnChange}
+            maxLength="255"
+            required={!isRemote}
           />
           <InputError message={errors.locality} className="mt-2" />
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="region" value="region" />
+          <InputLabel htmlFor="region" value={__('Region')} isRequired={!isRemote} />
           <TextInput
             id="region"
             name="region"
             value={data.region}
             className="mt-1 block w-full"
+            autoComplete="address-level1"
             onChange={handleOnChange}
+            maxLength="255"
+            required={!isRemote}
           />
           <InputError message={errors.region} className="mt-2" />
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="postal_code" value="postal_code" />
+          <InputLabel htmlFor="postal_code" value={__('Postal Code')} isRequired={!isRemote} />
           <TextInput
             id="postal_code"
             name="postal_code"
             value={data.postal_code}
             className="mt-1 block w-full"
+            autoComplete="postal-code"
             onChange={handleOnChange}
+            maxLength="255"
+            required={!isRemote}
           />
           <InputError message={errors.postal_code} className="mt-2" />
         </div>
 
+        <h3 className="mt-10 font-semibold">{__('Salary')}</h3>
         <div className="mt-4">
-          <InputLabel htmlFor="salary_min" value="salary_min" />
+          <InputLabel htmlFor="salary_min" value={__('Min. Salary')} isRequired={true} />
           <TextInput
             id="salary_min"
             name="salary_min"
@@ -176,13 +203,14 @@ const Show = ({
             type="number"
             className="mt-1 block w-full"
             onChange={handleOnChange}
+            min="0"
             required
           />
           <InputError message={errors.salary_min} className="mt-2" />
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="salary_max" value="salary_max" />
+          <InputLabel htmlFor="salary_max" value={__('Max. Salary')} />
           <TextInput
             id="salary_max"
             name="salary_max"
@@ -190,12 +218,13 @@ const Show = ({
             type="number"
             className="mt-1 block w-full"
             onChange={handleOnChange}
+            min="0"
           />
           <InputError message={errors.salary_max} className="mt-2" />
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="salary_unit" value="salary_unit" />
+          <InputLabel htmlFor="salary_unit" value={__('Salary Unit')} isRequired={true} />
           <Select
             id="salary_unit"
             name="salary_unit"
@@ -208,34 +237,39 @@ const Show = ({
           <InputError message={errors.salary_unit} className="mt-2" />
         </div>
 
+        <h3 className="mt-10 font-semibold">{__('Company Information')}</h3>
         <div className="mt-4">
-          <InputLabel htmlFor="company_name" value="company_name" />
+          <InputLabel htmlFor="company_name" value={__('Company Name')} isRequired={true} />
           <TextInput
             id="company_name"
             name="company_name"
             value={data.company_name}
             className="mt-1 block w-full"
+            autoComplete="organization"
             onChange={handleOnChange}
+            maxLength="255"
             required
           />
           <InputError message={errors.company_name} className="mt-2" />
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="company_description" value="company_description" />
-          <TextInput
+          <InputLabel htmlFor="company_description" value={__('Company Description')} isRequired={true} />
+          <Textarea
             id="company_description"
             name="company_description"
             value={data.company_description}
             className="mt-1 block w-full"
             onChange={handleOnChange}
+            maxLength="20000"
             required
           />
           <InputError message={errors.company_description} className="mt-2" />
         </div>
 
+        <h3 className="mt-10 font-semibold">{__('Authentication Information')}</h3>
         <div className="mt-4">
-          <InputLabel htmlFor="name" value="Name" />
+          <InputLabel htmlFor="name" value={__('Your Name')} isRequired={true} />
           <TextInput
             id="name"
             name="name"
@@ -243,42 +277,47 @@ const Show = ({
             className="mt-1 block w-full"
             autoComplete="name"
             onChange={handleOnChange}
+            maxLength="255"
             required
           />
           <InputError message={errors.name} className="mt-2" />
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="email" value="Email" />
+          <InputLabel htmlFor="email" value={__('Email Address')} isRequired={true} />
           <TextInput
             id="email"
             type="email"
             name="email"
             value={data.email}
             className="mt-1 block w-full"
-            autoComplete="name"
+            autoComplete="email"
             onChange={handleOnChange}
+            maxLength="255"
             required
           />
           <InputError message={errors.email} className="mt-2" />
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="password" value="Password" />
+          <InputLabel htmlFor="password" value={__('Password')} isRequired={true} />
           <TextInput
             id="password"
             type="password"
             name="password"
             value={data.password}
             className="mt-1 block w-full"
-            autoComplete="new-password"
+            autoComplete="current-password"
             onChange={handleOnChange}
+            maxLength="255"
             required
           />
           <InputError message={errors.password} className="mt-2" />
         </div>
 
-        <PrimaryButton disabled={processing}>Post</PrimaryButton>
+        <PrimaryButton disabled={processing} className="mt-6">
+          {__('Post')}
+        </PrimaryButton>
       </form>
     </>
   );
