@@ -96,8 +96,25 @@ class JobPostingController extends Controller
      */
     public function show(JobPosting $jobPosting)
     {
+        $keys = [
+            '[TITLE]' => 'title',
+            '[COMPANY]' => 'company_name',
+            '[REGION]' => 'region',
+            '[LOCALITY]' => 'locality',
+            '[EMPLOYMENT_TYPE]' => 'employment_type',
+        ];
+        $title = config('meta.jobs.show.title');
+        foreach ($keys as $key => $property) {
+            $title = str_replace($key, $jobPosting->$property, $title);
+        }
+        $description = config('meta.jobs.show.description');
+        foreach ($keys as $key => $property) {
+            $description = str_replace($key, $jobPosting->$property, $description);
+        }
         return view('jobs.show', [
             'jobPosting' => $jobPosting,
+            'title' => $title,
+            'description' => $description,
             'amp' => Route::currentRouteName() === 'jobs.show.amp',
         ]);
     }
