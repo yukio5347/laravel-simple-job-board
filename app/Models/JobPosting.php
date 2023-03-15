@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Js;
 
 class JobPosting extends Model
 {
@@ -75,6 +76,29 @@ class JobPosting extends Model
         'salary_unit',
         'company_name',
         'company_description',
+        'created_at',
+        'employment_type_text',
+        'employment_type_color',
+        'salary_unit_text',
+        'short_work_place',
+        'work_place',
+        'short_salary',
+        'salary',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'employment_type_text',
+        'employment_type_color',
+        'salary_unit_text',
+        'short_work_place',
+        'work_place',
+        'short_salary',
+        'salary',
     ];
 
     /**
@@ -120,6 +144,44 @@ class JobPosting extends Model
     }
 
     /**
+     * Get the employment_type tag color
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function employmentTypeColor(): Attribute
+    {
+        switch ($this->employment_type) {
+            case 'FULL_TIME':
+                $color = 'text-sky-600 bg-sky-100';
+                break;
+
+            case 'PART_TIME':
+                $color = 'text-orange-600 bg-orange-100';
+                break;
+
+            case 'CONTRACTOR':
+                $color = 'text-violet-600 bg-violet-100';
+                break;
+
+            case 'TEMPORARY':
+                $color = 'text-red-600 bg-red-100';
+                break;
+
+            case 'INTERN':
+                $color = 'text-green-600 bg-green-100';
+                break;
+
+            default:
+                $color = 'text-gray-700 bg-gray-200';
+                break;
+        }
+
+        return Attribute::make(
+            get: fn ($value) => $color,
+        );
+    }
+
+    /**
      * Get the salary_unit as displaying text
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
@@ -128,6 +190,31 @@ class JobPosting extends Model
     {
         return Attribute::make(
             get: fn ($value) => __($this->salary_unit),
+        );
+    }
+
+    /**
+     * Get the short work place
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function shortWorkPlace(): Attribute
+    {
+        $address = [];
+        if ($this->locality) {
+            $address[] = $this->locality;
+        }
+        if ($this->region && $this->region !== $this->locality) {
+            $address[] = $this->region;
+        }
+        $workPlace = implode(', ', $address);
+
+        if ($this->is_remote) {
+            $workPlace = $workPlace ? __('Remote') . " / {$workPlace}" : __('Remote');
+        }
+
+        return Attribute::make(
+            get: fn ($value) => $workPlace,
         );
     }
 
@@ -154,11 +241,23 @@ class JobPosting extends Model
         $workPlace = implode(', ', $address);
 
         if ($this->is_remote) {
-            $workPlace += $workPlace ? 'Remote: ' : 'Remote';
+            $workPlace = $workPlace ? __('Remote') . " / {$workPlace}" : __('Remote');
         }
 
         return Attribute::make(
             get: fn ($value) => $workPlace,
+        );
+    }
+
+    /**
+     * Get the short salary
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function shortSalary(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => config('app.currency') . ' ' . number_format($this->salary_min) . ' / ' . $this->salary_unit_text,
         );
     }
 

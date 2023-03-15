@@ -56,7 +56,9 @@ class JobPostingController extends Controller
     public function index()
     {
         return Inertia::render('Jobs/Index', [
-            'paginator' => JobPosting::active()->orderBy('id', 'desc')->paginate(),
+            'paginator' => JobPosting::active()->orderBy('id', 'desc')->paginate(20),
+            'title' => config('meta.jobs.index.title'),
+            'description' => config('meta.jobs.index.description'),
         ]);
     }
 
@@ -67,7 +69,19 @@ class JobPostingController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Jobs/Create');
+        $jobPosting = JobPosting::make([
+            'employment_type' => 'FULL_TIME',
+            'is_remote' => false,
+            'closed_at' => today()->addDays(30),
+            'salary_min' => 0,
+            'salary_unit' => 'MONTH',
+        ]);
+
+        return Inertia::render('Jobs/Form', [
+            'jobPosting' => $jobPosting,
+            'title' => config('meta.jobs.create.title'),
+            'description' => config('meta.jobs.create.description'),
+        ]);
     }
 
     /**
@@ -96,8 +110,25 @@ class JobPostingController extends Controller
      */
     public function show(JobPosting $jobPosting)
     {
+        $keys = [
+            '[TITLE]' => 'title',
+            '[COMPANY]' => 'company_name',
+            '[REGION]' => 'region',
+            '[LOCALITY]' => 'locality',
+            '[EMPLOYMENT_TYPE]' => 'employment_type',
+        ];
+        $title = config('meta.jobs.show.title');
+        foreach ($keys as $key => $property) {
+            $title = str_replace($key, $jobPosting->$property, $title);
+        }
+        $description = config('meta.jobs.show.description');
+        foreach ($keys as $key => $property) {
+            $description = str_replace($key, $jobPosting->$property, $description);
+        }
         return view('jobs.show', [
             'jobPosting' => $jobPosting,
+            'title' => $title,
+            'description' => $description,
             'amp' => Route::currentRouteName() === 'jobs.show.amp',
         ]);
     }
@@ -110,8 +141,10 @@ class JobPostingController extends Controller
      */
     public function edit(JobPosting $jobPosting)
     {
-        return Inertia::render('Jobs/Edit', [
+        return Inertia::render('Jobs/Form', [
             'jobPosting' => $jobPosting,
+            'title' => config('meta.jobs.edit.title'),
+            'description' => '',
         ]);
     }
 
@@ -146,6 +179,7 @@ class JobPostingController extends Controller
     {
         return Inertia::render('Jobs/Delete', [
             'jobPosting' => $jobPosting,
+            'title' => config('meta.jobs.destroy.title'),
         ]);
     }
 

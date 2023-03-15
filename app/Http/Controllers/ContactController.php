@@ -18,7 +18,10 @@ class ContactController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Contacts/Create');
+        return Inertia::render('Contacts/Create', [
+            'title' => config('meta.contact.title'),
+            'description' => config('meta.contact.description'),
+        ]);
     }
 
     /**
@@ -37,6 +40,9 @@ class ContactController extends Controller
         Mail::to(config('mail.admin'))->queue(new ContactReceived($contact));
         session()->flash('message', __('Thank you for your inquiry'));
 
-        return Inertia::render('Contacts/Thanks');
+        return Inertia::render('Contacts/Thanks',[
+            'title' => config('meta.contact.title'),
+            'description' => config('meta.contact.description'),
+        ]);
     }
 }

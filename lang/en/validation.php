@@ -181,7 +181,7 @@ return [
 
     'attributes' => [
         'name' => __('Your Name'),
-        'email' => __('Email'),
+        'email' => __('Email Address'),
         'password' => __('Password'),
     ],
 

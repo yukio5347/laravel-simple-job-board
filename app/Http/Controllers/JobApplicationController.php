@@ -31,9 +31,12 @@ class JobApplicationController extends Controller
     public function create(JobPosting $jobPosting)
     {
         $genders = JobApplication::GENDER;
+        $genders = array_combine($genders, array_map(fn(string $k): string => __($k), $genders));
+        $genders = array_merge([null => __('- Select -')], $genders);
         return Inertia::render('Jobs/Apply', [
             'jobPosting' => $jobPosting,
-            'genders' => array_combine($genders, array_map(fn(string $k): string => __($k), $genders)),
+            'title' => config('meta.jobs.apply.title'),
+            'genders' => $genders,
         ]);
     }
 
