@@ -179,6 +179,7 @@ class JobPostingController extends Controller
     {
         return Inertia::render('Jobs/Delete', [
             'jobPosting' => $jobPosting,
+            'title' => config('meta.jobs.destroy.title'),
         ]);
     }
 

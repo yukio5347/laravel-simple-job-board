@@ -21,15 +21,12 @@ return [
         ],
         'edit' => [
             'title' => env('JOBS_EDIT_TITLE'),
-            'description' => env('JOBS_EDIT_DESCRIPTION'),
         ],
-        'destroy.confirm' => [
-            'title' => env('JOBS_DESTROY_CONFIRM_TITLE'),
-            'description' => env('JOBS_DESTROY_CONFIRM_DESCRIPTION'),
+        'destroy' => [
+            'title' => env('JOBS_DESTROY_TITLE'),
         ],
         'apply' => [
             'title' => env('JOBS_APPLY_TITLE'),
-            'description' => env('JOBS_APPLY_DESCRIPTION'),
         ],
     ],
     'contact' => [
