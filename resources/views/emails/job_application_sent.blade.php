@@ -2,7 +2,7 @@ Hi, {!! $jobApplication->name !!},
 
 {{ __('Your application for ":title" has been submitted', ['title' => $jobApplication->JobPosting->title]) }}
 
-[Job information]
+[{{ __('Job Information') }}]
 - {{ __('Job Title') }}: {!! $jobApplication->jobPosting->title !!}
 - {{ __('Employment Type') }}: {!! $jobApplication->jobPosting->employment_type_text !!}
 - {{ __('Work Place') }}: {!!  $jobApplication->jobPosting->work_place !!}
@@ -11,11 +11,11 @@ Hi, {!! $jobApplication->name !!},
 - {{ __('Company Name') }}: {!! $jobApplication->jobPosting->company_name !!}
 - {{ __('Company Description') }}: {!! $jobApplication->jobPosting->company_description !!}
 - {{ __('Name') }}: {!! $jobApplication->jobPosting->name !!}
-- {{ __('Email') }}: {!! $jobApplication->jobPosting->email !!}
+- {{ __('Email Address') }}: {!! $jobApplication->jobPosting->email !!}
 
-[Your application]
+[{{ __('Your Application') }}]
 - {{ __('Name') }}: {!! $jobApplication->name !!}
-- {{ __('Email') }}: {!! $jobApplication->email !!}
+- {{ __('Email Address') }}: {!! $jobApplication->email !!}
 @if ($jobApplication->telephone)
 - {{ __('Telephone') }}: {!! $jobApplication->telephone !!}
 @endif

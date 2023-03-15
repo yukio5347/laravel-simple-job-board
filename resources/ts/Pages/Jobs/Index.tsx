@@ -102,7 +102,7 @@ const Index = ({ paginator, title, description }: { paginator: Paginator; title:
                 <p>{nl2br(currentJob.description)}</p>
               </div>
               <div className="py-5 border-b md:p-7 xl:p-10">
-                <h4 className="font-semibold mb-2 text-lg md:mb-4">{__('Company Profile')}</h4>
+                <h4 className="font-semibold mb-2 text-lg md:mb-4">{__('Company Description')}</h4>
                 <p>{nl2br(currentJob.company_description)}</p>
               </div>
               <div className="pt-3 md:p-7 md:py-4 xl:p-10 text-right">
