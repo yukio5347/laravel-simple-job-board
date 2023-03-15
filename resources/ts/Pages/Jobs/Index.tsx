@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, Head, usePage } from '@inertiajs/react';
+import Alert from '@/Components/Alert';
 import Pagination from '@/Components/Pagination';
 import Modal from '@/Components/Modal';
 import { Map, Money, Close } from '@/Components/Icons';
@@ -28,8 +29,12 @@ const Index = ({ paginator, title, description }: { paginator: Paginator; title:
         <title>{title}</title>
         <meta name="description" content={description} />
       </Head>
-      <h1 className="font-semibold mb-2">{title}</h1>
-      {message && <div className="alert">{String(message)}</div>}
+      {message && (
+        <Alert>
+          <p>{String(message)}</p>
+        </Alert>
+      )}
+      <h1 className="mb-2 font-semibold">{title}</h1>
       {paginator.data.length === 0 ? (
         <p>No jobs found.</p>
       ) : (
@@ -96,9 +101,17 @@ const Index = ({ paginator, title, description }: { paginator: Paginator; title:
                 <h4 className="font-semibold mb-2 text-lg md:mb-4">{__('Job Description')}</h4>
                 <p>{nl2br(currentJob.description)}</p>
               </div>
-              <div className="py-5 pb-0 md:p-7 xl:p-10">
+              <div className="py-5 border-b md:p-7 xl:p-10">
                 <h4 className="font-semibold mb-2 text-lg md:mb-4">{__('Company Profile')}</h4>
                 <p>{nl2br(currentJob.company_description)}</p>
+              </div>
+              <div className="pt-3 md:p-7 md:py-4 xl:p-10 text-right">
+                <Link href={route('jobs.edit', currentJob)} className="mr-5 text-sm text-sky-600" rel="nofollow">
+                  {__('Edit')}
+                </Link>
+                <Link href={route('jobs.destroy.confirm', currentJob)} className="text-sm text-sky-600" rel="nofollow">
+                  {__('Delete')}
+                </Link>
               </div>
             </div>
             <div className="sticky bottom-0 py-3 text-center bg-white shadow-[0_-3px_5px_-1px_rgba(0,0,0,0.1)]">
