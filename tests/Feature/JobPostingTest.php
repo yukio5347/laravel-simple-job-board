@@ -52,7 +52,7 @@ class JobPostingTest extends TestCase
     {
         $response = $this->get(route('jobs.create'))
                         ->assertInertia(fn (Assert $page) => $page
-                            ->component('Jobs/Create')
+                            ->component('Jobs/Form')
                         );
         $response->assertStatus(200);
     }
@@ -91,7 +91,7 @@ class JobPostingTest extends TestCase
         ]);
         $response = $this->get(route('jobs.edit', $jobPosting))
                         ->assertInertia(fn (Assert $page) => $page
-                            ->component('Jobs/Edit')
+                            ->component('Jobs/Form')
                             ->has('jobPosting', fn (Assert $page) => $page
                                 ->has('id')
                                 ->has('title')
