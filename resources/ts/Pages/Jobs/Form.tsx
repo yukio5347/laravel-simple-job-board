@@ -7,35 +7,38 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import Textarea from '@/Components/Textarea';
 import TextInput from '@/Components/TextInput';
 import Select from '@/Components/Select';
+import JobPosting from '@/Types/JobPosting';
 
 const Show = ({
-  employmentTypes,
-  salaryUnit,
+  jobPosting,
   title,
   description,
+  employmentTypes,
+  salaryUnit,
 }: {
-  employmentTypes: Record<string, string>;
-  salaryUnit: Record<string, string>;
+  jobPosting: JobPosting;
   title: string;
   description: string;
+  employmentTypes: Record<string, string>;
+  salaryUnit: Record<string, string>;
 }) => {
   const [isRemote, setIsRemote] = useState(false);
   const today = new Date();
-  const { data, setData, post, processing, errors, reset } = useForm({
-    title: '',
-    description: '',
-    closed_at: dateToString(new Date(today.setDate(today.getDate() + 30))),
-    employment_type: 'FULL_TIME',
-    is_remote: true,
-    address: '',
-    locality: '',
-    region: '',
-    postal_code: '',
-    salary_min: 0,
-    salary_max: '',
-    salary_unit: 'MONTH',
-    company_name: '',
-    company_description: '',
+  const { data, setData, post, patch, processing, errors, reset } = useForm({
+    title: jobPosting.title ?? 'this is title',
+    description: jobPosting.description ?? 'this is description',
+    closed_at: dateToString(new Date(jobPosting.closed_at)),
+    employment_type: jobPosting.employment_type,
+    is_remote: jobPosting.is_remote,
+    address: jobPosting.address ?? 'this is address',
+    locality: jobPosting.locality ?? 'this is locality',
+    region: jobPosting.region ?? 'this is region',
+    postal_code: jobPosting.postal_code ?? 'this is postal_code',
+    salary_min: jobPosting.salary_min,
+    salary_max: jobPosting.salary_max ?? '',
+    salary_unit: jobPosting.salary_unit,
+    company_name: jobPosting.company_name ?? 'this is company_name',
+    company_description: jobPosting.company_description ?? 'this is company_description',
     name: '',
     email: '',
     password: '',
@@ -52,13 +55,17 @@ const Show = ({
   };
 
   const toggleIsRemote = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setData('is_remote', e.target.checked);
-    setIsRemote(!isRemote);
+    setData('is_remote', e.target.checked ? '1' : '');
+    setIsRemote(e.target.checked);
   };
 
   const submit = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    post(route('jobs.store'));
+    if (jobPosting.created_at) {
+      patch(route('jobs.update', jobPosting));
+    } else {
+      post(route('jobs.store'));
+    }
   };
 
   return (
@@ -67,6 +74,7 @@ const Show = ({
         <title>{title}</title>
         <meta name="description" content={description} />
       </Head>
+      <h1 className="mb-4 font-semibold">{title}</h1>
       <form onSubmit={submit}>
         <div>
           <InputLabel htmlFor="title" value={__('Job Title')} isRequired={true} />
@@ -129,7 +137,7 @@ const Show = ({
 
         <h3 className="mt-10 font-semibold">{__('Work Place')}</h3>
         <label className="mt-4 inline-flex items-center">
-          <Checkbox name="is_remote" value={data.is_remote} onChange={toggleIsRemote} />
+          <Checkbox name="is_remote" onChange={toggleIsRemote} />
           <span className="ml-2 text-sm font-medium">{__('Remote')}</span>
         </label>
 
@@ -268,20 +276,22 @@ const Show = ({
         </div>
 
         <h3 className="mt-10 font-semibold">{__('Authentication Information')}</h3>
-        <div className="mt-4">
-          <InputLabel htmlFor="name" value={__('Your Name')} isRequired={true} />
-          <TextInput
-            id="name"
-            name="name"
-            value={data.name}
-            className="mt-1 block w-full"
-            autoComplete="name"
-            onChange={handleOnChange}
-            maxLength="255"
-            required
-          />
-          <InputError message={errors.name} className="mt-2" />
-        </div>
+        {!jobPosting.created_at && (
+          <div className="mt-4">
+            <InputLabel htmlFor="name" value={__('Your Name')} isRequired={true} />
+            <TextInput
+              id="name"
+              name="name"
+              value={data.name}
+              className="mt-1 block w-full"
+              autoComplete="name"
+              onChange={handleOnChange}
+              maxLength="255"
+              required
+            />
+            <InputError message={errors.name} className="mt-2" />
+          </div>
+        )}
 
         <div className="mt-4">
           <InputLabel htmlFor="email" value={__('Email Address')} isRequired={true} />

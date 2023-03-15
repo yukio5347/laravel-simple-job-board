@@ -69,7 +69,16 @@ class JobPostingController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Jobs/Create', [
+        $jobPosting = JobPosting::make([
+            'employment_type' => 'FULL_TIME',
+            'is_remote' => false,
+            'closed_at' => today()->addDays(30),
+            'salary_min' => 0,
+            'salary_unit' => 'MONTH',
+        ]);
+
+        return Inertia::render('Jobs/Form', [
+            'jobPosting' => $jobPosting,
             'title' => config('meta.jobs.create.title'),
             'description' => config('meta.jobs.create.description'),
         ]);
