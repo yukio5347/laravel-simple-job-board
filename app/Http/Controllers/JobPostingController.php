@@ -141,8 +141,10 @@ class JobPostingController extends Controller
      */
     public function edit(JobPosting $jobPosting)
     {
-        return Inertia::render('Jobs/Edit', [
+        return Inertia::render('Jobs/Form', [
             'jobPosting' => $jobPosting,
+            'title' => config('meta.jobs.edit.title'),
+            'description' => '',
         ]);
     }
 

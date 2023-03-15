@@ -5,12 +5,12 @@ type JobPosting = {
   closed_at: string;
   employment_type: string;
   is_remote: string;
-  address: string;
-  locality: string;
-  region: string;
-  postal_code: string;
+  address: string | null;
+  locality: string | null;
+  region: string | null;
+  postal_code: string | null;
   salary_min: number;
-  salary_max: number;
+  salary_max: number | null;
   salary_unit: string;
   company_name: string;
   company_description: string;
