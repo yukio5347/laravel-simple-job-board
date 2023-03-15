@@ -33,7 +33,7 @@
         <p>{!! nl2br(e($jobPosting->description)) !!}</p>
     </div>
     <div class="py-5 px-1 border-b md:p-7 xl:p-10">
-        <h4 class="font-semibold mb-2 text-lg md:mb-4">{{ __('Company Profile') }}</h4>
+        <h4 class="font-semibold mb-2 text-lg md:mb-4">{{ __('Company Description') }}</h4>
         <p>{!! nl2br(e($jobPosting->company_description)) !!}</p>
     </div>
     <div class="py-3 text-center">

@@ -1,7 +1,7 @@
 {{ __('Thank you for your inquiry') }}
 
-- {{ __('Name') }}: {!! $contact->name !!}
-- {{ __('Email') }}: {!! $contact->email !!}
+- {{ __('Your Name') }}: {!! $contact->name !!}
+- {{ __('Email Address') }}: {!! $contact->email !!}
 - {{ __('Message') }}
 {!! $contact->message !!}
 

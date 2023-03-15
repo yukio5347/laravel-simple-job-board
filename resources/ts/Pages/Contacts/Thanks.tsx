@@ -9,7 +9,7 @@ const Thanks = ({ title, description }: { title: string; description: string }) 
         <meta name="description" content={description} />
       </Head>
       <Alert>
-        <p>{__('Your inquiry has been sent.')}</p>
+        <p>{__('Thank you for your inquiry')}</p>
       </Alert>
       <a href={route('home')} className="text-sky-600">
         « {__('Back to home')}
