@@ -8,7 +8,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <header className="bg-sky-500 py-5">
         <div className="flex flex-col md:container md:flex-row md:justify-between">
           <a
-            href="{route('home')}"
+            href={route('home')}
             className="flex-none text-lg text-center inline-block text-white font-semibold md:text-left"
           >
             {String(appName)}
