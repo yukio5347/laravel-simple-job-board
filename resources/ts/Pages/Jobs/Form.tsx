@@ -25,20 +25,20 @@ const Show = ({
   const [isRemote, setIsRemote] = useState(false);
   const today = new Date();
   const { data, setData, post, patch, processing, errors, reset } = useForm({
-    title: jobPosting.title ?? 'this is title',
-    description: jobPosting.description ?? 'this is description',
+    title: jobPosting.title ?? '',
+    description: jobPosting.description ?? '',
     closed_at: dateToString(new Date(jobPosting.closed_at)),
     employment_type: jobPosting.employment_type,
     is_remote: jobPosting.is_remote,
-    address: jobPosting.address ?? 'this is address',
-    locality: jobPosting.locality ?? 'this is locality',
-    region: jobPosting.region ?? 'this is region',
-    postal_code: jobPosting.postal_code ?? 'this is postal_code',
+    address: jobPosting.address ?? '',
+    locality: jobPosting.locality ?? '',
+    region: jobPosting.region ?? '',
+    postal_code: jobPosting.postal_code ?? '',
     salary_min: jobPosting.salary_min,
     salary_max: jobPosting.salary_max ?? '',
     salary_unit: jobPosting.salary_unit,
-    company_name: jobPosting.company_name ?? 'this is company_name',
-    company_description: jobPosting.company_description ?? 'this is company_description',
+    company_name: jobPosting.company_name ?? '',
+    company_description: jobPosting.company_description ?? '',
     name: '',
     email: '',
     password: '',
@@ -73,6 +73,7 @@ const Show = ({
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
+        {jobPosting.created_at && <meta name="robots" content="noindex, nofollow" />}
       </Head>
       <h1 className="mb-4 font-semibold">{title}</h1>
       <form onSubmit={submit}>
@@ -326,7 +327,7 @@ const Show = ({
         </div>
 
         <PrimaryButton disabled={processing} className="mt-6">
-          {__('Post')}
+          {jobPosting.created_at ? __('Save') : __('Post')}
         </PrimaryButton>
       </form>
     </>
