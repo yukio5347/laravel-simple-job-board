@@ -35,8 +35,10 @@ class HandleInertiaRequests extends Middleware
 
         foreach ($locales as $locale) {
             $path = lang_path("{$locale}.json");
-            $content = file_get_contents($path);
-            $data[$locale] = json_decode($content, true);
+            if (file_exists($path)) {
+                $content = file_get_contents($path);
+                $data[$locale] = json_decode($content, true);
+            }
         }
 
         return array_merge(parent::share($request), [
