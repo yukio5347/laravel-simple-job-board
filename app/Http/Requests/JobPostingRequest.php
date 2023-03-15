@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\JobPosting;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 
 class JobPostingRequest extends FormRequest
@@ -34,16 +35,19 @@ class JobPostingRequest extends FormRequest
             'closed_at' => 'required|date|before_or_equal:' . today()->addDays(90)->format('Y-m-d'),
             'employment_type' => [Rule::in(JobPosting::EMPLOYMENT_TYPE), 'required'],
             'is_remote' => 'required|boolean',
-            'address' => [Rule::requiredIf(! $this->is_remote), 'nullable', 'string', 'max:255'],
-            'locality' => [Rule::requiredIf(! $this->is_remote), 'nullable', 'string', 'max:255'],
-            'region' => [Rule::requiredIf(! $this->is_remote), 'nullable', 'string', 'max:255'],
-            'postal_code' => [Rule::requiredIf(! $this->is_remote), 'nullable', 'string', 'max:255'],
+            'address' => 'required_unless:is_remote,1|nullable|string|max:255',
+            'locality' => 'required_unless:is_remote,1|nullable|string|max:255',
+            'region' => 'required_unless:is_remote,1|nullable|string|max:255',
+            'postal_code' => 'required_unless:is_remote,1|nullable|string|max:255',
             'salary_min' => 'required|integer',
             'salary_max' => 'nullable|integer',
             'salary_unit' => [Rule::in(JobPosting::SALARY_UNIT), 'required'],
             'company_name' => 'required|string|max:255',
             'company_description' => 'required|string|max:20000',
-            'name' => 'sometimes|required|string|max:255',
+            'name' => [
+                'nullable', 'string', 'max:255',
+                Rule::requiredIf(Route::currentRouteName() === 'jobs.create'),
+            ],
             'email' => 'required|string|email:rfc,dns|max:255',
             'password' => 'required|string|max:255',
         ];
