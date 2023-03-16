@@ -17,8 +17,8 @@
 @if ($jobApplication->gender)
 - {{ __('Gender') }}: {!! $jobApplication->gender !!}
 @endif
-@if ($jobApplication->education)
 - {{ __('Summary') }}: {!! $jobApplication->summary !!}
+@if ($jobApplication->education)
 - {{ __('Education') }}: {!! $jobApplication->education !!}
 @endif
 @if ($jobApplication->work_history)
