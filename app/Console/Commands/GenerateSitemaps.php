@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 
 class GenerateSitemaps extends Command
 {
-    const PER_PAGE = 20;//50000;
+    const PER_PAGE = 50000;
 
     const HEADER = '<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
