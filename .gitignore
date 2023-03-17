@@ -1,6 +1,7 @@
 /bootstrap/ssr
 /node_modules
 /public/hot
+/public/sitemaps
 /public/storage
 /storage/*.key
 /vendor
